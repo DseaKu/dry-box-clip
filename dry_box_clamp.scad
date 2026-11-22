@@ -16,9 +16,9 @@
 part = "assembly"; // [assembly:Assembly preview, clip:Clip (print orientation), test_set:Test set - 3 clips with different preload]
 
 /* [Box measurements] */
-// Lid top to the underside of the box rim (mm)
-stack = 23;
-// Distance the top ridge reaches in over the lid, measured from x = 0 (mm)
+// Underside of the box rim to the lid surface where the upper tooth presses (mm)
+stack = 21;
+// Distance the upper tooth reaches in over the lid, measured from x = 0 (mm)
 top_reach = 22;
 // Distance the bottom ridge reaches in under the rim, measured from x = 0 (mm)
 bottom_reach = 4;
@@ -26,18 +26,22 @@ bottom_reach = 4;
 /* [Fit] */
 // Interference: the ridge gap is this much smaller than the stack (mm). More = tighter.
 preload = 0.8;
-// Height of the contact ridges (mm)
+// Height of the bottom contact ridge (mm)
 ridge_h = 1.0;
+// Depth of the upper tooth: how far it hangs down below the top jaw (mm)
+top_tooth_depth = 5;
+// Width of the upper tooth (mm). The tip is a half circle of this width.
+top_tooth_w = 3.2;
 // Air between the spine and the outermost point of lid / rim (mm)
 spine_clear = 1.5;
 
 /* [Frame] */
 // Clip width along the box edge (mm)
-width = 15;
+width = 80;
 // Spine thickness (mm). Thinner = softer spring.
-spine_t = 3.2;
+spine_t = 5.0;
 // Jaw thickness (mm)
-jaw_t = 3.5;
+jaw_t = 5.5;
 // Inner fillet radius (mm). It also gives space for a round lid edge.
 fillet_r = 2.5;
 // Outer edge radius (mm)
@@ -61,7 +65,6 @@ else if (part == "test_set")
 // ---------------------------------------------------------------------------
 
 function contact_gap(p) = stack - p;
-function face_gap(p) = contact_gap(p) + 2 * ridge_h;
 
 echo(str("CLIP: stack ", stack, " mm, ridge gap ", contact_gap(preload), " mm, preload ", preload, " mm"));
 
@@ -71,23 +74,30 @@ module ridge2d(x, face_z, up) {
   translate([x - ridge_r, face_z + up * (ridge_h - ridge_r)]) circle(r=ridge_r);
 }
 
+// Upper tooth: a finger with a round tip. Outer edge flush with the jaw tip.
+module tooth2d(x, tip_z, top_z, w) {
+  hull() {
+    translate([x - w / 2, tip_z + w / 2]) circle(d=w);
+    translate([x - w, top_z - 0.01]) square([w, 0.5]); // root, inside the jaw
+  }
+}
+
 module profile2d(p) {
-  H = face_gap(p);
   xs = -spine_clear - spine_t; // outer face of the spine
   // bottom jaw: top face at z = -ridge_h, so the ridge top is at z = 0
   bz = -ridge_h;
-  // top jaw: underside at z = bz + H, so the ridge bottom is at contact_gap
-  tz = bz + H;
+  // top jaw: underside at z = tz, so the upper tooth tip is at contact_gap
+  tz = contact_gap(p) + top_tooth_depth;
 
   offset(r=edge_r) offset(delta=-edge_r)
       offset(r=-fillet_r) offset(delta=fillet_r)
           union() {
-            translate([xs, bz - jaw_t]) square([spine_t, H + 2 * jaw_t]); // spine
+            translate([xs, bz - jaw_t]) square([spine_t, tz - bz + 2 * jaw_t]); // spine
             translate([xs, bz - jaw_t]) square([bottom_reach - xs, jaw_t]); // bottom jaw
             translate([xs, tz]) square([top_reach - xs, jaw_t]); // top jaw
+            tooth2d(top_reach, contact_gap(p), tz, top_tooth_w); // upper tooth
           }
   ridge2d(bottom_reach, bz, 1);
-  ridge2d(top_reach, tz, -1);
 }
 
 module clip(p, w = width) {

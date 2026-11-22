@@ -11,9 +11,11 @@ opens a little and presses the lid down on the box.
 
 | Parameter      | Meaning                                                           | Default |
 | -------------- | ----------------------------------------------------------------- | ------- |
-| `stack`        | Lid top to the underside of the box rim (caliper measurement)     | 27 mm   |
-| `preload`      | The ridge gap is this much smaller than `stack`. More = tighter.  | 0.8 mm  |
-| `top_reach`    | Distance the top ridge reaches in over the lid                    | 12 mm   |
+| `stack`           | Underside of the box rim to the lid surface under the upper tooth | 23 mm   |
+| `preload`         | The tooth gap is this much smaller than `stack`. More = tighter.  | 0.8 mm  |
+| `top_reach`       | Distance the upper tooth reaches in over the lid                  | 22 mm   |
+| `top_tooth_depth` | How far the upper tooth hangs down below the top jaw              | 5 mm    |
+| `top_tooth_w`     | Width of the upper tooth                                          | 3.2 mm  |
 | `bottom_reach` | Distance the bottom ridge reaches in under the rim                | 4 mm    |
 | `spine_t`      | Spine thickness. Thinner = softer spring.                         | 3.2 mm  |
 
