@@ -17,7 +17,7 @@ part = "assembly"; // [assembly:Assembly preview, clip:Clip (print orientation),
 
 /* [Box measurements] */
 // Underside of the box rim to the lid surface where the upper tooth presses (mm)
-stack = 21;
+stack = 18.5;
 // Distance the upper tooth reaches in over the lid, measured from x = 0 (mm)
 top_reach = 22;
 // Distance the bottom ridge reaches in under the rim, measured from x = 0 (mm)
@@ -37,7 +37,7 @@ spine_clear = 1.5;
 
 /* [Frame] */
 // Clip width along the box edge (mm)
-width = 80;
+width = 100;
 // Spine thickness (mm). Thinner = softer spring.
 spine_t = 5.0;
 // Jaw thickness (mm)

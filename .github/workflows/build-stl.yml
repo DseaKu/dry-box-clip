@@ -1,0 +1,38 @@
+name: Build STL
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write # needed to attach STLs to a release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install OpenSCAD
+        run: sudo apt-get update && sudo apt-get install -y openscad
+
+      - name: Build STLs
+        run: |
+          mkdir -p out
+          for p in clip test_set; do
+            openscad -o "out/$p.stl" -D "part=\"$p\"" dry_box_clip.scad
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stl
+          path: out/*.stl
+
+      - name: Attach STLs to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: out/*.stl

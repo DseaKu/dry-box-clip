@@ -1,32 +1,32 @@
-# Dry box clip
+# Dry Box Clip
 
-One-piece snap clip for a filament dry box. No screws.
-Source: `dry_box_clamp.scad` (OpenSCAD, Customizer).
+![Dry box clip](img/clip.png) ![Side view](img/clip_side.png)
 
-The clip is a C-spring. The gap between its two contact ridges is a little
-smaller than the lid + rim stack. Push the clip on from the side. The clip
-opens a little and presses the lid down on the box.
+Parametric snap clip for a filament dry box. One printed part, no screws.
 
-## Parameters
+The clip is a C-spring. The gap between its upper tooth and bottom ridge is a
+little smaller than the lid + rim stack. Push it on from the side, and it
+presses the lid onto the gasket.
 
-| Parameter      | Meaning                                                           | Default |
-| -------------- | ----------------------------------------------------------------- | ------- |
-| `stack`           | Underside of the box rim to the lid surface under the upper tooth | 23 mm   |
-| `preload`         | The tooth gap is this much smaller than `stack`. More = tighter.  | 0.8 mm  |
-| `top_reach`       | Distance the upper tooth reaches in over the lid                  | 22 mm   |
-| `top_tooth_depth` | How far the upper tooth hangs down below the top jaw              | 5 mm    |
-| `top_tooth_w`     | Width of the upper tooth                                          | 3.2 mm  |
-| `bottom_reach` | Distance the bottom ridge reaches in under the rim                | 4 mm    |
-| `spine_t`      | Spine thickness. Thinner = softer spring.                         | 3.2 mm  |
+## Use
 
-## Files
+1. Measure from the underside of the box rim to the lid top.
+2. Open `dry_box_clip.scad` in OpenSCAD and set `stack` in the Customizer.
+3. Export `part = "clip"` (print orientation):
+   `openscad -o clip.stl -D 'part="clip"' dry_box_clip.scad`
 
-- `stl/clip.stl`: one clip, 15 mm wide, preload 0.8 mm.
-- `stl/test_set.stl`: three narrow clips (8 mm), preload 0.4 / 0.8 / 1.2 mm from left to right.
-  Print this set first. Then set `preload` to the best value.
+| Parameter         | Meaning                                             |
+| ----------------- | --------------------------------------------------- |
+| `stack`           | Rim underside to the lid surface under the tooth    |
+| `preload`         | Gap is this much smaller than `stack` (tighter fit) |
+| `top_reach`       | Reach of the upper tooth over the lid               |
+| `top_tooth_depth` | Depth of the upper tooth below the top jaw          |
+| `bottom_reach`    | Reach of the bottom ridge under the rim             |
+| `width`           | Clip length along the box edge                      |
+| `spine_t`         | Spine thickness (thinner = softer spring)           |
 
 ## Print
 
-- Print the clip on its side, as exported. Layers then follow the spring.
-- PETG is better than PLA. PLA can crack or lose tension over time.
-- 4 walls or more, 100 % infill is OK for a small part.
+- Lay the clip on its side (as exported). No supports needed.
+- PETG recommended. PLA can crack or lose tension.
+- 4+ walls.
