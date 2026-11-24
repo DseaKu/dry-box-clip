@@ -1,6 +1,6 @@
 # Dry Box Clip
 
-![Dry box clip](img/clip.png) ![Side view](img/clip_side.png)
+![Dry box clip](img/clip.png)
 
 Parametric snap clip for a filament dry box. One printed part, no screws.
 
